@@ -2,50 +2,48 @@
   background-color: #173D37;
   display: inline-block;
 }
-.rcc-calendar-table {
-  border-spacing: 0;
-  border-collapse: collapse;
-  font-size: inherit;
-  margin: 4px 8px;
-}
-.rcc-calendar-table > thead > tr > th {
-  height: 36px;
-  width: 36px;
-  font-weight: normal;
-  color: #cccccc;
-}
-.rcc-calendar-table-cell {
-  width: 36px;
-  height: 36px;
-  color: #ffebc8;
-  text-align: center;
-  padding: 0;
-  cursor: pointer;
-}
 .rcc-calendar-th {
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.rcc-calendar-date {
+.rcc-calendar-cell {
+  color: #ffebc8;
+  text-align: center;
+  padding: 0;
+  cursor: pointer;
+}
+.rcc-calendar-date,
+.rcc-calendar-month,
+.rcc-calendar-year {
   border-radius: 2px;
-  min-height: 100%;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.rcc-calendar-date:hover {
+.rcc-calendar-date:hover,
+.rcc-calendar-month:hover,
+.rcc-calendar-year:hover {
   background-color: #0d7b7b;
+  margin: 0 auto;
 }
 .rcc-calendar-date-today {
   border: 1px solid #0d7b7b;
+  color: #000;
+  background-color: #f38b1e;
 }
 .rcc-calendar-date-next,
 .rcc-calendar-date-front {
   color: #000000;
 }
-.rcc-calendar-ym {
+.rcc-calendar-date-selected {
+  background-color: #0d7b7b;
+  color: #ffebc8;
+}
+.rcc-calendar-header {
   height: 36px;
   border-bottom: 1px solid #0d7b7b;
   display: flex;
@@ -53,33 +51,104 @@
   flex-direction: row;
   position: relative;
 }
-.rcc-calendar-ym-center {
+.rcc-calendar-header-center {
   flex: 1;
 }
-.rcc-calendar-year,
-.rcc-calendar-month {
+.rcc-calendar-header-center-year,
+.rcc-calendar-header-center-month {
   color: #FFECC6;
   cursor: pointer;
 }
-.rcc-calendar-year:hover,
-.rcc-calendar-month:hover {
+.rcc-calendar-header-center-year:hover,
+.rcc-calendar-header-center-month:hover {
   color: #0d7b7b;
 }
-.rcc-calendar-month {
+.rcc-calendar-header-center-month {
   margin-left: 5px;
+}
+.rcc-calendar-header-center-group {
+  color: #ffebc8;
+  cursor: default;
+}
+.rcc-calendar-header-left,
+.rcc-calendar-header-right {
+  width: 40px;
 }
 .rcc-calendar-button {
   width: 20px;
   height: 100%;
   cursor: pointer;
 }
-.rcc-calendar-button:hover .icon-right:before,
-.rcc-calendar-button:hover .icon-left:before,
-.rcc-calendar-button:hover .icon-right:after,
-.rcc-calendar-button:hover .icon-left:after,
-.rcc-calendar-button:hover .icon-left:before,
-.rcc-calendar-button:hover .icon-left:after {
+.rcc-calendar-button:hover .rcc-icon-right:before,
+.rcc-calendar-button:hover .rcc-icon-left:before,
+.rcc-calendar-button:hover .rcc-icon-right:after,
+.rcc-calendar-button:hover .rcc-icon-left:after,
+.rcc-calendar-button:hover .rcc-icon-left:before,
+.rcc-calendar-button:hover .rcc-icon-left:after {
   color: #0d7b7b;
+}
+.rcc-calendar-panels {
+  width: 280px;
+  height: 280px;
+  position: relative;
+}
+.rcc-calendar-range-left .rcc-calendar-panels {
+  margin-right: 15px;
+}
+.rcc-calendar-range-right .rcc-calendar-panels {
+  margin-left: 15px;
+}
+.rcc-calendar-date-panel table,
+.rcc-calendar-month-panel table,
+.rcc-calendar-year-panel table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  font-size: inherit;
+  height: 100%;
+  width: 100%;
+}
+.rcc-calendar-date-panel table > thead > tr > th {
+  height: 36px;
+  font-weight: normal;
+  color: #cccccc;
+}
+.rcc-calendar-month-panel,
+.rcc-calendar-year-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #173D37;
+}
+.rcc-calendar-wrapper {
+  display: inline-block;
+  position: relative;
+  overflow: visible;
+}
+.rcc-calendar-input {
+  display: inline-block;
+  border-radius: 2px;
+}
+.rcc-calendar-input input {
+  display: inline-block;
+  outline: none;
+  padding: 4px 7px;
+  cursor: text;
+  line-height: 1.5;
+  background-color: #0e1a18;
+  border: 1px solid #233431;
+  border-radius: 2px;
+  color: #fff3dd;
+}
+.rcc-calendar-input-range {
+  display: inline-block;
+  background-color: #0e1a18;
+  color: #fff3dd;
+  border-radius: 2px;
+}
+.rcc-calendar-input-range input {
+  border: none;
 }
 .rcc-calendar-range {
   background-color: #173D37;
@@ -94,19 +163,22 @@
   top: 50%;
   transform: translateY(-50%);
 }
-.icon-right,
-.icon-left {
+.rcc-calendar-icon {
+  display: inline-block;
+}
+.rcc-icon-right,
+.rcc-icon-left {
   width: 6px;
   height: 10px;
   position: relative;
   display: inline-block;
 }
-.icon-right:before,
-.icon-right:after,
-.icon-left:before,
-.icon-left:after {
+.rcc-icon-right:before,
+.rcc-icon-right:after,
+.rcc-icon-left:before,
+.rcc-icon-left:after {
   content: '';
-  width: 7px;
+  width: 5px;
   height: 2px;
   position: absolute;
   bottom: 0;
@@ -116,24 +188,70 @@
   box-shadow: inset 0 0 0 16px;
   transform-origin: right;
 }
-.icon-right:before,
-.icon-left:before {
+.rcc-icon-right:before,
+.rcc-icon-left:before {
   top: 0;
   transform: rotate(45deg);
 }
-.icon-right:after,
-.icon-left:after {
+.rcc-icon-right:after,
+.rcc-icon-left:after {
   top: 0;
   transform: rotate(-45deg);
 }
-.icon-left {
+.rcc-icon-left {
   transform: rotate(180deg);
 }
+.rcc-icon-calendar {
+  width: 32px;
+  height: 28px;
+  border-width: 4px 2px 2px;
+  border-style: solid;
+  border-radius: 4px;
+  margin: 5px 1px 1px;
+}
+.rcc-icon-calendar:before {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  top: 3px;
+  left: 3px;
+  box-shadow: inset 0 0 0 32px, 6px 0, 12px 0, 18px 0,
+    0 6px, 6px 6px, 12px 6px, 18px 6px,
+    0 12px, 6px 12px, 12px 12px, 18px 12px;
+}
+.rcc-icon-calendar:after {
+  position: absolute;
+  width: 4px;
+  height: 8px;
+  box-shadow: inset 0 0 0 32px, 16px 0;
+  border-radius: 4px;
+  top: -8px;
+  left: 4px;
+}
 .flex-center,
-.rcc-calendar-ym-center,
-.rcc-calendar-button {
+.rcc-calendar-header-center,
+.rcc-calendar-header-left,
+.rcc-calendar-header-right,
+.rcc-calendar-button,
+.rcc-calendar-range-content {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+}
+.rcc-calendar-modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.rcc-calendar-modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+.rcc-calendar-modal .rcc-calendar {
+  z-index: 1010;
 }

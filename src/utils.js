@@ -59,3 +59,29 @@ export const monthDay = (value) => {
   return arr;
 };
 
+export const years = (y) => {
+  y = y - (y % 10);
+  const arr = [];
+  for (let i = 0; i < 12; i++) {
+    if (i === 0 || i === 11) {
+      arr.push(null);
+    } else {
+      arr.push(y + i - 1);
+    }
+  }
+  return arr;
+};
+
+export const yearGroup = (y) => {
+  y = y - (y % 100);
+  const arr = [];
+  for (let i = 0; i < 12; i++) {
+    if (i === 0 || i === 11) {
+      arr.push(null);
+    } else {
+      arr.push(years(y));
+      y += 10;
+    }
+  }
+  return arr;
+};

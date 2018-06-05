@@ -28,6 +28,7 @@
   "homepage": "https://github.com/Paul-Long/r-calendar#readme",
   "dependencies": {
     "classnames": "^2.2.5",
+    "lodash": "^4.17.10",
     "moment": "^2.22.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.0"
