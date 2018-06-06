@@ -110,6 +110,9 @@
   height: 100%;
   width: 100%;
 }
+.rcc-calendar-date-panel {
+  height: 100%;
+}
 .rcc-calendar-date-panel table > thead > tr > th {
   height: 36px;
   font-weight: normal;

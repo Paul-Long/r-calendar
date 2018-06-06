@@ -1,6 +1,6 @@
 {
   "name": "rcc-calendar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "react component calendar",
   "main": "./dist/index.js",
   "files": [
@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build": "babel src -d dist & lessc ./src/index.less ./dist/index.css",
-    "lint": "eslint --ext .js src"
+    "lint": "eslint --ext .js src",
+    "link": "npm link"
   },
   "repository": {
     "type": "git",

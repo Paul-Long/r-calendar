@@ -87,7 +87,7 @@ export type ModalProps = {
   onClick: Function,
 }
 
-export type WrapperProps = {
+export type PickerProps = {
   dateRender?: Function,
   onChange?: Function,
   placeholder: string | Array,
@@ -97,19 +97,19 @@ export type WrapperProps = {
 }
 
 export type InputProps = {
-  iconRender?:Function,
+  iconRender?: Function,
   onClick?: Function,
   value: moment,
   format: string,
-  placeholder: string,
-  showIcon: boolean,
+  placeholder?: string,
+  showIcon?: boolean,
 }
 
 export type RangeInputProps = {
   iconRender?: Function,
   onClick?: Function,
   value: Array,
-  placeholder: Array,
+  placeholder?: Array,
   format: string,
-  showIcon: boolean,
+  showIcon?: boolean,
 }
