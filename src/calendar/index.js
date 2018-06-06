@@ -26,7 +26,7 @@ class Calendar extends React.PureComponent<CalendarProps> {
   }
 
   componentWillReceiveProps(next) {
-    if (next.value && next.value !== this.props) {
+    if (next.value && next.value !== this.props.value) {
       this.setState({ value: next.value });
     }
   }
@@ -95,8 +95,8 @@ class Calendar extends React.PureComponent<CalendarProps> {
 
   renderPanel = () => {
     const { mode, value } = this.state;
-    const { renderDate, dateWidth, dateHeight, format, selectValue } = this.props;
-    const props = { renderDate, dateWidth, dateHeight, format, selectValue, value, mode };
+    const { dateRender, dateWidth, dateHeight, format, selectValue } = this.props;
+    const props = { dateRender, dateWidth, dateHeight, format, selectValue, value, mode };
     switch (mode) {
       case Mode.MONTH:
         return <MonthPanel {...props}
@@ -110,8 +110,8 @@ class Calendar extends React.PureComponent<CalendarProps> {
 
   renderDatePanel = () => {
     const { value } = this.state;
-    const { renderDate, dateWidth, dateHeight, format, selectValue } = this.props;
-    const props = { renderDate, dateWidth, dateHeight, format, selectValue, value };
+    const { dateRender, dateWidth, dateHeight, format, selectValue } = this.props;
+    const props = { dateRender, dateWidth, dateHeight, format, selectValue, value };
     return <DatePanel {...props} onSelect={this.handleChange} />;
   };
 

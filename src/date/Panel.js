@@ -19,11 +19,11 @@ class DatePanel extends React.PureComponent<DatePanelProps> {
   }
 
   renderDate = (data) => {
-    const { renderDate, dateWidth, dateHeight, format, selectValue, onSelect } = this.props;
+    const { dateRender, dateWidth, dateHeight, format, selectValue, onSelect } = this.props;
     const { year, month, date } = data;
     const props = {
       key: `${year}-${month}-${date}`,
-      renderDate,
+      dateRender,
       dateWidth,
       dateHeight,
       data,

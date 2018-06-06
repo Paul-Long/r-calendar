@@ -12,12 +12,13 @@ class Date extends React.PureComponent<DateProps> {
       return false;
     }
     if (selectValue instanceof Array) {
-      return selectValue.some(s => moment(`${year}-${month}-${date}`, FORMAT[2]).isSame(moment(s)));
+      return selectValue.some(s => s && `${year}-${month}-${date}` === s.format(FORMAT[2]));
     }
-    return moment(`${year}-${month}-${date}`, FORMAT[2]).isSame(moment(selectValue));
+    return selectValue && `${year}-${month}-${date}` === selectValue.format(FORMAT[2]);
   };
 
-  handleClick = () => {
+  handleClick = (event) => {
+    event.stopPropagation();
     const { data, onClick, format } = this.props;
     const { date, month, year } = data;
     if (typeof onClick === 'function') {
@@ -27,12 +28,12 @@ class Date extends React.PureComponent<DateProps> {
   };
 
   render() {
-    const { className, renderDate, data } = this.props;
+    const { className, dateRender, data } = this.props;
     let date = data.date;
     const { month, year, isFront, isNext } = data;
     const isToday = `${year}-${month}-${date}` === moment().format(FORMAT[2]) && !isFront && !isNext;
-    if (typeof renderDate === 'function') {
-      date = renderDate(data);
+    if (typeof dateRender === 'function') {
+      date = dateRender(data);
     }
     const dateCls = `${prefix}-date`;
     const cls = classNames(

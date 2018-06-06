@@ -2,7 +2,7 @@ import moment from 'moment';
 import { Mode } from './variable';
 
 export type CalendarProps = {
-  renderDate?: Function,
+  dateRender?: Function,
   className?: string,
   dateWidth?: number,
   dateHeight?: number,
@@ -17,7 +17,7 @@ export type CalendarProps = {
 
 export type DateProps = {
   className?: string,
-  renderDate: Function,
+  dateRender: Function,
   format: string,
   data: Object,
   selectValue: moment | Array<moment>
@@ -26,7 +26,7 @@ export type DateProps = {
 export type RangeProps = {
   className?: string,
   value: Array<moment>,
-  renderDate: Function,
+  dateRender: Function,
   dateWidth: number,
   dateHeight: number,
   format: string,
@@ -40,7 +40,7 @@ export type ButtonProps = {
 };
 
 export type DatePanelProps = {
-  renderDate: Function,
+  dateRender: Function,
   dateWidth: number,
   dateHeight: number,
   format: string,
@@ -85,4 +85,31 @@ export type ModalProps = {
   children: any,
   visible: boolean,
   onClick: Function,
+}
+
+export type WrapperProps = {
+  dateRender?: Function,
+  onChange?: Function,
+  placeholder: string | Array,
+  value: string | Array,
+  format: string,
+  iconRender: Function,
+}
+
+export type InputProps = {
+  iconRender?:Function,
+  onClick?: Function,
+  value: moment,
+  format: string,
+  placeholder: string,
+  showIcon: boolean,
+}
+
+export type RangeInputProps = {
+  iconRender?: Function,
+  onClick?: Function,
+  value: Array,
+  placeholder: Array,
+  format: string,
+  showIcon: boolean,
 }

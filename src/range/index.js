@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { FORMAT, prefix } from '../variable';
 import { RangeProps } from '../Props';
 import Calendar from '../calendar';
+import { RangeInput } from '../components';
 
 class Range extends React.PureComponent<RangeProps> {
   static defaultProps = {
@@ -15,7 +16,7 @@ class Range extends React.PureComponent<RangeProps> {
     super(props);
     this.state = {
       ...this.getValue(),
-      selectValue: [],
+      selectValue: props.selectValue,
     };
   }
 
@@ -29,6 +30,16 @@ class Range extends React.PureComponent<RangeProps> {
       startDate = moment().subtract(1, 'M');
     }
     return { startDate, endDate };
+  };
+
+  getRange = (selectValue) => {
+    const [start, end] = selectValue || [];
+    if (start && end) {
+      if (start.isAfter(end)) {
+        return [end, start];
+      }
+    }
+    return [start, end];
   };
 
   handlePanelChange = (value, mode, key) => {
@@ -46,13 +57,16 @@ class Range extends React.PureComponent<RangeProps> {
     }
     this.setState({ selectValue: [...select] });
     if (typeof onChange === 'function' && select.length === 2) {
-      const [start, end] = select;
-      if (start.isBefore(end)) {
-        onChange([start, end], [start.format(format), end.format(format)]);
-      } else {
-        onChange([end, start], [end.format(format), start.format(format)]);
-      }
+      select = this.getRange(select);
+      onChange(select, select.map(s => s.format(format)));
     }
+  };
+
+  renderSelect = () => {
+    const { selectValue } = this.state;
+    const { format, iconRender } = this.props;
+    return <RangeInput value={this.getRange(selectValue)} showIcon={false} format={format} iconRender={iconRender}
+                       placeholder={['开始时间', '结束时间']} />;
   };
 
   render() {
@@ -63,7 +77,7 @@ class Range extends React.PureComponent<RangeProps> {
     return (
       <div className={classNames(pf, className)}>
         <div className={`${pf}-select`}>
-
+          {this.renderSelect()}
         </div>
         <div className={`${pf}-content`}>
           <Calendar className={`${pf}-left`}
