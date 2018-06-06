@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { findDOMNode } from 'react-dom';
 import { CalendarType, FORMAT, PickerType, prefix } from './variable';
 import Calendar from './calendar';
 import Range from './range';
@@ -33,6 +34,27 @@ class Picker extends React.PureComponent<PickerProps> {
     }
   }
 
+  componentDidUpdate() {
+    const { visible } = this.state;
+    if (visible && this.ctr && this.modal) {
+      const width = document.body.clientWidth;
+      const height = document.body.clientHeight;
+      const cRect = findDOMNode(this.ctr).getBoundingClientRect();
+      const mRect = findDOMNode(this.modal).getBoundingClientRect();
+      console.log(width, height, cRect, mRect);
+      if (cRect.left + mRect.width > width) {
+        this.modal.style.left = `${width - mRect.width}px`;
+      } else {
+        this.modal.style.left = `${cRect.left}px`;
+      }
+      if (cRect.top + mRect.height > height) {
+        this.modal.style.top = `${height - mRect.height}px`;
+      } else {
+        this.modal.style.top = `${cRect.top}px`;
+      }
+    }
+  }
+
   handleFocus = () => {
     this.setState({ visible: true });
   };
@@ -59,14 +81,20 @@ class Picker extends React.PureComponent<PickerProps> {
     }
   };
 
+  saveRef = (name) => {
+    return n => this[name] = n;
+  };
+
   renderIcon = () => {
     const { iconRender } = this.props;
     let icon;
     if (typeof iconRender === 'function') {
       icon = <div style={{ display: 'inline-block' }}
+                  ref={this.saveRef('ctr')}
                   onClick={this.handleFocus}>{iconRender()}</div>;
     } else {
       icon = (<Icon type='calendar'
+                    ref={this.saveRef('ctr')}
                     onClick={this.handleFocus} />);
     }
     return icon;
@@ -80,6 +108,7 @@ class Picker extends React.PureComponent<PickerProps> {
       value,
       iconRender,
       format,
+      ref: this.saveRef('ctr'),
     };
     switch (calendarType) {
       case CalendarType.INPUT:
@@ -111,7 +140,9 @@ class Picker extends React.PureComponent<PickerProps> {
     return (
       <div className={`${prefix}-wrapper`}>
         {this.renderMain()}
-        <Modal visible={this.state.visible} onClick={v => this.setState({ visible: v })}>
+        <Modal visible={this.state.visible}
+               saveRef={this.saveRef}
+               onClick={v => this.setState({ visible: v })}>
           {this.renderChild()}
         </Modal>
         <div className={`${prefix}-mask`}

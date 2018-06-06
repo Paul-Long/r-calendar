@@ -85,6 +85,7 @@ export type ModalProps = {
   children: any,
   visible: boolean,
   onClick: Function,
+  saveRef: Function,
 }
 
 export type PickerProps = {

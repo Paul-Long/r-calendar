@@ -33,7 +33,7 @@ class Date extends React.PureComponent<DateProps> {
     const { month, year, isFront, isNext } = data;
     const isToday = `${year}-${month}-${date}` === moment().format(FORMAT[2]) && !isFront && !isNext;
     if (typeof dateRender === 'function') {
-      date = dateRender(data);
+      date = dateRender(moment([year, month - 1, date]), moment());
     }
     const dateCls = `${prefix}-date`;
     const cls = classNames(

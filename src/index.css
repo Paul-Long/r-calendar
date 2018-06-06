@@ -110,6 +110,16 @@
   height: 100%;
   width: 100%;
 }
+.rcc-calendar-date-panel table > thead,
+.rcc-calendar-month-panel table > thead,
+.rcc-calendar-year-panel table > thead {
+  display: table-header-group !important;
+}
+.rcc-calendar-date-panel table > tbody,
+.rcc-calendar-month-panel table > tbody,
+.rcc-calendar-year-panel table > tbody {
+  display: table-row-group !important;
+}
 .rcc-calendar-date-panel {
   height: 100%;
 }
@@ -268,7 +278,7 @@
   align-items: center;
 }
 .rcc-calendar-modal {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 1030;

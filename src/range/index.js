@@ -62,37 +62,39 @@ class Range extends React.PureComponent<RangeProps> {
     }
   };
 
+  calendarProps = (cls, key, diff) => {
+    const pf = `${prefix}-range`;
+    return {
+      className: `${pf}-${cls}`,
+      value: this.state[key],
+      onPanelChange: (v, m) => this.handlePanelChange(v, m, key),
+      onChange: this.handleChange,
+      selectValue: this.state.selectValue,
+      dateRender: this.props.dateRender,
+      [`${cls === 'left' ? 'right' : cls}Enable`]: diff,
+    };
+  };
+
   renderSelect = () => {
     const { selectValue } = this.state;
     const { format, iconRender } = this.props;
     return <RangeInput value={this.getRange(selectValue)} showIcon={false} format={format} iconRender={iconRender}
-                       placeholder={['开始时间', '结束时间']} />;
+                       placeholder={['', '结束时间']} />;
   };
 
   render() {
     const { className } = this.props;
-    const { startDate, endDate, selectValue } = this.state;
+    const { startDate, endDate } = this.state;
     const pf = `${prefix}-range`;
-    const diff = parseInt(endDate.format(FORMAT[3])) - parseInt(startDate.format(FORMAT[3]));
+    const diff = parseInt(endDate.format(FORMAT[3])) - parseInt(startDate.format(FORMAT[3])) !== 1;
     return (
       <div className={classNames(pf, className)}>
         <div className={`${pf}-select`}>
           {this.renderSelect()}
         </div>
         <div className={`${pf}-content`}>
-          <Calendar className={`${pf}-left`}
-                    value={startDate}
-                    rightEnable={diff !== 1}
-                    onPanelChange={(v, m) => this.handlePanelChange(v, m, 'startDate')}
-                    onChange={this.handleChange}
-                    selectValue={selectValue}
-          />
-          <Calendar className={`${pf}-right`}
-                    value={endDate} leftEnable={diff !== 1}
-                    onPanelChange={(v, m) => this.handlePanelChange(v, m, 'endDate')}
-                    onChange={this.handleChange}
-                    selectValue={selectValue}
-          />
+          <Calendar {...this.calendarProps('left', 'startDate', diff)} />
+          <Calendar {...this.calendarProps('right', 'endDate', diff)} />
         </div>
       </div>
     );
