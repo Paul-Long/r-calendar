@@ -36,21 +36,21 @@ class Picker extends React.PureComponent<PickerProps> {
 
   componentDidUpdate() {
     const { visible } = this.state;
-    if (visible && this.ctr && this.modal) {
-      const width = document.body.clientWidth;
-      const height = document.body.clientHeight;
-      const cRect = findDOMNode(this.ctr).getBoundingClientRect();
-      const mRect = findDOMNode(this.modal).getBoundingClientRect();
-      console.log(width, height, cRect, mRect);
+    const { ctr, modal } = this;
+    if (visible && ctr && modal) {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const cRect = findDOMNode(ctr).getBoundingClientRect();
+      const mRect = findDOMNode(modal).getBoundingClientRect();
       if (cRect.left + mRect.width > width) {
-        this.modal.style.left = `${width - mRect.width}px`;
+        modal.style.left = `${width - mRect.width}px`;
       } else {
-        this.modal.style.left = `${cRect.left}px`;
+        modal.style.left = `${cRect.left}px`;
       }
       if (cRect.top + mRect.height > height) {
-        this.modal.style.top = `${height - mRect.height}px`;
+        modal.style.top = `${height - mRect.height}px`;
       } else {
-        this.modal.style.top = `${cRect.top}px`;
+        modal.style.top = `${cRect.top}px`;
       }
     }
   }
