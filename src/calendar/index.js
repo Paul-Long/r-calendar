@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { CalendarProps } from '../Props';
 import { FORMAT, Mode, prefix } from '../variable';
-import { monthDay } from '../utils';
 import { DatePanel } from '../date';
 import { MonthPanel } from '../month';
 import { YearPanel } from '../year';
@@ -29,13 +28,18 @@ class Calendar extends React.PureComponent<CalendarProps> {
     if (next.value && next.value !== this.props.value) {
       this.setState({ value: next.value });
     }
+    if (next.visible && next.visible !== this.props.visible) {
+      this.setState({ mode: Mode.DATE });
+      this.Mode_Bak = null;
+    }
   }
 
   handleMomentChange = event => {
     const { onPanelChange } = this.props;
-    const num = parseInt(event.target['data-num']);
+    const num = parseInt(event.target['data-num'], 10);
     const unit = event.target['data-unit'];
-    let { value, mode } = this.state;
+    const { mode } = this.state;
+    let { value } = this.state;
     if (mode === Mode.DATE) {
       value = value.startOf('M').subtract(num, unit);
     } else if (mode === Mode.MONTH) {
@@ -46,8 +50,10 @@ class Calendar extends React.PureComponent<CalendarProps> {
       value = value.startOf('M').subtract(num * 100, unit);
     }
     value = moment(value);
-    this.setState({ value, days: monthDay(value) }, () => {
-      onPanelChange(value, this.state.mode);
+    this.setState({ value }, () => {
+      if (typeof onPanelChange === 'function') {
+        onPanelChange(this.state.value, this.state.mode);
+      }
     });
   };
 
@@ -69,7 +75,7 @@ class Calendar extends React.PureComponent<CalendarProps> {
   };
 
   handlePanelClick = (arg, mode) => {
-    const {onPanelChange} = this.props;
+    const { onPanelChange } = this.props;
     const { value } = this.state;
     const state = {};
     if (mode === Mode.MONTH) {
@@ -89,29 +95,37 @@ class Calendar extends React.PureComponent<CalendarProps> {
       state.mode = Mode.YEAR;
     }
     this.setState(state, () => {
-      onPanelChange(this.state.value, this.state.mode);
+      if (typeof onPanelChange === 'function') {
+        onPanelChange(this.state.value, this.state.mode);
+      }
     });
   };
 
   renderPanel = () => {
     const { mode, value } = this.state;
-    const { dateRender, dateWidth, dateHeight, format, selectValue } = this.props;
-    const props = { dateRender, dateWidth, dateHeight, format, selectValue, value, mode };
+    const { disabledDate, dateRender, dateWidth, dateHeight, format, selectValue } = this.props;
+    const props = { disabledDate, dateRender, dateWidth, dateHeight, format, selectValue, value, mode };
     switch (mode) {
       case Mode.MONTH:
-        return <MonthPanel {...props}
-                           onClick={m => this.handlePanelClick(m, Mode.MONTH)} />;
+        return (<MonthPanel
+          {...props}
+          onClick={m => this.handlePanelClick(m, Mode.MONTH)}
+        />);
       case Mode.YEAR:
       case Mode.GROUP:
-        return <YearPanel {...props}
-                          onClick={y => this.handlePanelClick(y, mode)} />;
+        return (<YearPanel
+          {...props}
+          onClick={y => this.handlePanelClick(y, mode)}
+        />);
+      default:
+        return null;
     }
   };
 
   renderDatePanel = () => {
     const { value } = this.state;
-    const { dateRender, dateWidth, dateHeight, format, selectValue } = this.props;
-    const props = { dateRender, dateWidth, dateHeight, format, selectValue, value };
+    const { disabledDate, dateRender, dateWidth, dateHeight, format, selectValue } = this.props;
+    const props = { disabledDate, dateRender, dateWidth, dateHeight, format, selectValue, value };
     return <DatePanel {...props} onSelect={this.handleChange} />;
   };
 
@@ -121,12 +135,13 @@ class Calendar extends React.PureComponent<CalendarProps> {
     const cls = classNames(prefix, className);
     return (
       <div className={cls}>
-        <Header value={value}
-                mode={mode}
-                leftEnable={leftEnable || mode !== Mode.DATE}
-                rightEnable={rightEnable || mode !== Mode.DATE}
-                onModeChange={this.handleModeChange}
-                onMomentChange={this.handleMomentChange}
+        <Header
+          value={value}
+          mode={mode}
+          leftEnable={leftEnable || mode !== Mode.DATE}
+          rightEnable={rightEnable || mode !== Mode.DATE}
+          onModeChange={this.handleModeChange}
+          onMomentChange={this.handleMomentChange}
         />
         <div className={`${prefix}-panels`}>
           {this.renderDatePanel()}

@@ -16,9 +16,9 @@ class MonthPanel extends React.PureComponent<MonthPanelProps> {
       <div className={`${prefix}-month-panel`}>
         <table>
           <tbody>
-          {
-            months.map((ms, i) => (<tr key={`month-row-${i}`}>{this.renderMonth(ms, i)}</tr>))
-          }
+            {
+              months.map((ms, i) => (<tr key={ms.join('-')}>{this.renderMonth(ms, i)}</tr>))
+            }
           </tbody>
         </table>
       </div>

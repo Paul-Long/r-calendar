@@ -13,6 +13,7 @@ class Picker extends React.PureComponent<PickerProps> {
     pickerType: PickerType.DATE,
     calendarType: CalendarType.INPUT,
     format: FORMAT[1],
+    showIcon: true,
   };
   state = {
     visible: false,
@@ -24,7 +25,10 @@ class Picker extends React.PureComponent<PickerProps> {
     const { value, pickerType } = next;
     if (value !== this.props.value && value !== this.state.value) {
       if (pickerType === PickerType.DATE) {
-        this.setState({ value: value ? moment(value) : value, selectValue: value ? moment(value) : value });
+        this.setState({
+          value: value ? moment(value) : value,
+          selectValue: value ? moment(value) : value,
+        });
       } else if (pickerType === PickerType.RANGE) {
         this.setState({
           value: (value || []).map(v => moment(v)),
@@ -82,26 +86,38 @@ class Picker extends React.PureComponent<PickerProps> {
   };
 
   saveRef = (name) => {
-    return n => this[name] = n;
+    return n => {
+      this[name] = n;
+    };
   };
 
   renderIcon = () => {
     const { iconRender } = this.props;
     let icon;
     if (typeof iconRender === 'function') {
-      icon = <div style={{ display: 'inline-block' }}
-                  ref={this.saveRef('ctr')}
-                  onClick={this.handleFocus}>{iconRender()}</div>;
+      icon = (
+        <div
+          style={{ display: 'inline-block' }}
+          ref={this.saveRef('ctr')}
+          onClick={this.handleFocus}
+        >
+          {iconRender()}
+        </div>
+      );
     } else {
-      icon = (<Icon type='calendar'
-                    ref={this.saveRef('ctr')}
-                    onClick={this.handleFocus} />);
+      icon = (
+        <Icon
+          type="calendar"
+          ref={this.saveRef('ctr')}
+          onClick={this.handleFocus}
+        />
+      );
     }
     return icon;
   };
 
   renderMain = () => {
-    const { calendarType, pickerType, format, iconRender } = this.props;
+    const { calendarType, pickerType, format, iconRender, showIcon } = this.props;
     const { value } = this.state;
     const props = {
       onClick: this.handleFocus,
@@ -109,6 +125,7 @@ class Picker extends React.PureComponent<PickerProps> {
       iconRender,
       format,
       ref: this.saveRef('ctr'),
+      showIcon,
     };
     switch (calendarType) {
       case CalendarType.INPUT:
@@ -118,20 +135,25 @@ class Picker extends React.PureComponent<PickerProps> {
         return (<Input {...props} />);
       case CalendarType.ICON:
         return this.renderIcon();
+      default:
+        return null;
     }
   };
 
   renderChild = () => {
     const { pickerType, ...other } = this.props;
-    const { value, selectValue } = this.state;
+    const { value, selectValue, visible } = this.state;
     other.onChange = this.handleChange;
     other.value = value;
     other.selectValue = selectValue;
+    other.visible = visible;
     switch (pickerType) {
       case PickerType.DATE:
         return <Calendar {...other} />;
       case PickerType.RANGE:
         return <Range {...other} />;
+      default:
+        return null;
     }
   };
 
@@ -140,14 +162,17 @@ class Picker extends React.PureComponent<PickerProps> {
     return (
       <div className={`${prefix}-wrapper`}>
         {this.renderMain()}
-        <Modal visible={this.state.visible}
+        <Modal visible={visible}
                saveRef={this.saveRef}
-               onClick={v => this.setState({ visible: v })}>
+               onClick={v => this.setState({ visible: v })}
+        >
           {this.renderChild()}
         </Modal>
-        <div className={`${prefix}-mask`}
-             style={{ display: visible ? 'block' : 'none' }}
-             onClick={this.handleMaskClick} />
+        <div
+          className={`${prefix}-mask`}
+          style={{ display: visible ? 'block' : 'none' }}
+          onClick={this.handleMaskClick}
+        />
       </div>
     );
   }

@@ -64,29 +64,39 @@ class Range extends React.PureComponent<RangeProps> {
 
   calendarProps = (cls, key, diff) => {
     const pf = `${prefix}-range`;
+    const { dateRender, disabledDate, visible } = this.props;
     return {
       className: `${pf}-${cls}`,
       value: this.state[key],
       onPanelChange: (v, m) => this.handlePanelChange(v, m, key),
       onChange: this.handleChange,
       selectValue: this.state.selectValue,
-      dateRender: this.props.dateRender,
-      [`${cls === 'left' ? 'right' : cls}Enable`]: diff,
+      dateRender,
+      disabledDate,
+      visible,
+      [`${cls === 'left' ? 'right' : 'left'}Enable`]: diff,
     };
   };
 
   renderSelect = () => {
     const { selectValue } = this.state;
     const { format, iconRender } = this.props;
-    return <RangeInput value={this.getRange(selectValue)} showIcon={false} format={format} iconRender={iconRender}
-                       placeholder={['', '结束时间']} />;
+    return (<RangeInput
+      value={this.getRange(selectValue)}
+      showIcon={false}
+      format={format}
+      iconRender={iconRender}
+      placeholder={['', '结束时间']}
+    />);
   };
 
   render() {
     const { className } = this.props;
     const { startDate, endDate } = this.state;
     const pf = `${prefix}-range`;
-    const diff = parseInt(endDate.format(FORMAT[3])) - parseInt(startDate.format(FORMAT[3])) !== 1;
+    const endInt = parseInt(endDate.format(FORMAT[3]), 10);
+    const startInt = parseInt(startDate.format(FORMAT[3]), 10);
+    const diff = (endInt - startInt) !== 1;
     return (
       <div className={classNames(pf, className)}>
         <div className={`${pf}-select`}>

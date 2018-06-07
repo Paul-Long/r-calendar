@@ -1,8 +1,8 @@
 import React from 'react';
+import chunk from 'lodash/chunk';
 import { prefix, Mode } from '../variable';
 import { years, yearGroup } from '../utils';
 import { YearPanelProps } from '../Props';
-import chunk from 'lodash/chunk';
 import Year from './Year';
 
 class YearPanel extends React.PureComponent<YearPanelProps> {
@@ -41,11 +41,19 @@ class YearPanel extends React.PureComponent<YearPanelProps> {
   renderYear = () => {
     const { years } = this.state;
     const { onClick } = this.props;
-    return chunk(years, 3).map((ys, i) => (
-      <tr key={`year-row-${i}`}>{
-        ys.map(y => <Year key={`year-${y}`} onClick={() => onClick(y)}>{this.getText(y)}</Year>)
-      }</tr>
-    ));
+    let i = 0;
+    const group = chunk(years, 3);
+    const trs = [];
+    for (const ys of group) {
+      trs.push(
+        <tr key={`year-row-${i += 1}`}>
+          {
+            ys.map(y => <Year key={`year-${y}`} onClick={() => onClick(y)}>{this.getText(y)}</Year>)
+          }
+        </tr>,
+      );
+    }
+    return trs;
   };
 
   render() {
@@ -53,7 +61,7 @@ class YearPanel extends React.PureComponent<YearPanelProps> {
       <div className={`${prefix}-year-panel`}>
         <table>
           <tbody>
-          {this.renderYear()}
+            {this.renderYear()}
           </tbody>
         </table>
       </div>

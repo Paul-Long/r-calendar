@@ -12,7 +12,7 @@ function fixControlledValue<T>(value: T) {
 
 class Input extends React.PureComponent<InputProps> {
   static defaultProps = {
-    showIcon: true
+    showIcon: true,
   };
   renderIcon = () => {
     const { iconRender, showIcon } = this.props;
@@ -20,19 +20,20 @@ class Input extends React.PureComponent<InputProps> {
       if (typeof iconRender === 'function') {
         return iconRender();
       }
-      return (<Icon type='calendar' />);
+      return (<Icon type="calendar" />);
     }
   };
 
   render() {
-    let { onClick, value, format, placeholder } = this.props;
+    const { onClick, format, placeholder } = this.props;
+    let { value } = this.props;
     if (value) {
       value = value.format(format);
     }
     value = fixControlledValue(value);
     return (
       <div className={`${prefix}-input`} onClick={onClick}>
-        <input type='text' readOnly value={value} placeholder={placeholder} />
+        <input type="text" readOnly value={value} placeholder={placeholder} />
         {this.renderIcon()}
       </div>
     );

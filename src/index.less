@@ -22,6 +22,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  &-date:not(&-date-disabled),
+  &-month:not(&-month-disabled),
+  &-year:not(&-year-disabled) {
     &:hover {
       background-color: #0d7b7b;
       margin: 0 auto;
@@ -41,6 +45,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  &-date-disabled {
+    background-color: #8F9598;
+    border-radius: 0;
+    &:hover {
+      cursor: not-allowed;
+    }
   }
   &-header {
     height: @rcc-height;

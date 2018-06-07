@@ -9,7 +9,7 @@ export const current = (value) => {
   const year = now.year();
   const front = moment(_value).subtract(1, 'M');
   const endDate = front.endOf('month').date();
-  const startDate = endDate - day + 1;
+  const startDate = (endDate - day) + 1;
   const next = moment(value).add(1, 'month');
   return {
     front: {
@@ -28,30 +28,40 @@ export const current = (value) => {
       moment: next,
       year: next.year(),
       month: next.month() + 1,
-    }
+    },
   };
 };
 
 export const monthDay = (value) => {
   const { day, endDate, month, year, front, next } = current(value);
-  let arr = [];
+  const arr = [];
   let date = 1;
   let nDate = 1;
-  for (let i = 0; i < 6; i++) {
-    let weeks = [];
-    for (let w = 1; w <= 7; w++) {
+  for (let i = 0; i < 6; i += 1) {
+    const weeks = [];
+    for (let w = 1; w <= 7; w += 1) {
       if (i === 0) {
         if (day > w) {
-          weeks.push({ year: front.year, month: front.month, date: front.startDate + w - 1, week: w, isFront: true });
+          weeks.push({
+            year: front.year,
+            month: front.month,
+            date: (front.startDate + w) - 1,
+            week: w,
+            isFront: true,
+          });
         } else {
           weeks.push({ year, month, date: date++, week: w });
         }
+      } else if (date <= endDate) {
+        weeks.push({ year, month, date: date++, week: w });
       } else {
-        if (date <= endDate) {
-          weeks.push({ year, month, date: date++, week: w });
-        } else {
-          weeks.push({ year: next.year, month: next.month, date: nDate++, week: w, isNext: true });
-        }
+        weeks.push({
+          year: next.year,
+          month: next.month,
+          date: nDate++,
+          week: w,
+          isNext: true,
+        });
       }
     }
     arr.push(weeks);
@@ -60,22 +70,22 @@ export const monthDay = (value) => {
 };
 
 export const years = (y) => {
-  y = y - (y % 10);
+  y -= (y % 10);
   const arr = [];
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i += 1) {
     if (i === 0 || i === 11) {
       arr.push(null);
     } else {
-      arr.push(y + i - 1);
+      arr.push((y + i) - 1);
     }
   }
   return arr;
 };
 
 export const yearGroup = (y) => {
-  y = y - (y % 100);
+  y -= (y % 100);
   const arr = [];
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i += 1) {
     if (i === 0 || i === 11) {
       arr.push(null);
     } else {

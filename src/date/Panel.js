@@ -19,7 +19,7 @@ class DatePanel extends React.PureComponent<DatePanelProps> {
   }
 
   renderDate = (data) => {
-    const { dateRender, dateWidth, dateHeight, format, selectValue, onSelect } = this.props;
+    const { dateRender, dateWidth, dateHeight, format, selectValue, onSelect, disabledDate } = this.props;
     const { year, month, date } = data;
     const props = {
       key: `${year}-${month}-${date}`,
@@ -30,30 +30,39 @@ class DatePanel extends React.PureComponent<DatePanelProps> {
       format,
       onClick: onSelect,
       selectValue,
+      disabledDate,
     };
     return (<Date {...props} />);
   };
 
+  renderWeek = () => {
+    const ws = [];
+    for (const w of weeks) {
+      ws.push(
+        <th key={w}>
+          <div className={`${prefix}-th`}>{w}</div>
+        </th>);
+    }
+    return (<tr>{ws}</tr>);
+  };
+
   render() {
     const { days } = this.state;
+    let index = 0;
     return (
       <div className={`${prefix}-date-panel`}>
         <table>
           <thead>
-          <tr>
-            {weeks.map(w => <th key={w}>
-              <div className={`${prefix}-th`}>{w}</div>
-            </th>)}
-          </tr>
+            {this.renderWeek()}
           </thead>
           <tbody>
-          {
-            days.map((ws, index) => (
-              <tr key={`week-${index}`}>
-                {ws.map(this.renderDate)}
-              </tr>
-            ))
-          }
+            {
+              days.map(ws => (
+                <tr key={`date-row-${index += 1}`}>
+                  {ws.map(this.renderDate)}
+                </tr>
+              ))
+            }
           </tbody>
         </table>
       </div>

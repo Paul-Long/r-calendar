@@ -13,11 +13,13 @@ export type CalendarProps = {
   onChange?: Function,
   onPanelChange?: Function,
   selectValue: moment | Array<moment>,
+  disabledDate?: Function,
 };
 
 export type DateProps = {
   className?: string,
   dateRender: Function,
+  disabledDate?: Function,
   format: string,
   data: Object,
   selectValue: moment | Array<moment>
@@ -91,10 +93,12 @@ export type ModalProps = {
 export type PickerProps = {
   dateRender?: Function,
   onChange?: Function,
-  placeholder: string | Array,
-  value: string | Array,
-  format: string,
-  iconRender: Function,
+  placeholder?: string | Array,
+  value?: string | Array,
+  format?: string,
+  iconRender?: Function,
+  disabledDate?: Function,
+  showIcon: boolean,
 }
 
 export type InputProps = {

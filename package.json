@@ -1,6 +1,6 @@
 {
   "name": "rcc-calendar",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "react component calendar",
   "main": "./dist/index.js",
   "files": [
@@ -9,7 +9,9 @@
   ],
   "scripts": {
     "build": "babel src -d dist & lessc ./src/index.less ./dist/index.css",
+    "install:package": "npm install --registry=https://registry.npm.taobao.org -d",
     "lint": "eslint --ext .js src",
+    "fix:lint": "eslint --fix src",
     "link": "npm link"
   },
   "repository": {

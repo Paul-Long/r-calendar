@@ -28,13 +28,16 @@ class Date extends React.PureComponent<DateProps> {
   };
 
   render() {
-    const { className, dateRender, data } = this.props;
-    let date = data.date;
+    const { className, dateRender, data, disabledDate } = this.props;
+    let { date } = data;
     const { month, year, isFront, isNext } = data;
     const isToday = `${year}-${month}-${date}` === moment().format(FORMAT[2]) && !isFront && !isNext;
+    const current = moment([year, month - 1, date]);
+    const today = moment();
     if (typeof dateRender === 'function') {
-      date = dateRender(moment([year, month - 1, date]), moment());
+      date = dateRender(current, today);
     }
+    const disabled = disabledDate && disabledDate(current, today);
     const dateCls = `${prefix}-date`;
     const cls = classNames(
       dateCls,
@@ -44,11 +47,12 @@ class Date extends React.PureComponent<DateProps> {
         [`${dateCls}-front`]: isFront,
         [`${dateCls}-today`]: isToday,
         [`${dateCls}-selected`]: this.isSelect(),
-      }
+        [`${dateCls}-disabled`]: disabled,
+      },
     );
     return (
-      <td className={`${prefix}-cell`} onClick={this.handleClick}>
-        <div className={cls}>
+      <td className={`${prefix}-cell`}>
+        <div className={cls} onClick={disabled ? () => null : this.handleClick}>
           {date}
         </div>
       </td>

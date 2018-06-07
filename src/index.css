@@ -24,9 +24,9 @@
   justify-content: center;
   align-items: center;
 }
-.rcc-calendar-date:hover,
-.rcc-calendar-month:hover,
-.rcc-calendar-year:hover {
+.rcc-calendar-date:not(.rcc-calendar-date-disabled):hover,
+.rcc-calendar-month:not(.rcc-calendar-month-disabled):hover,
+.rcc-calendar-year:not(.rcc-calendar-year-disabled):hover {
   background-color: #0d7b7b;
   margin: 0 auto;
 }
@@ -45,6 +45,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.rcc-calendar-date-disabled {
+  background-color: #8F9598;
+  border-radius: 0;
+}
+.rcc-calendar-date-disabled:hover {
+  cursor: not-allowed;
 }
 .rcc-calendar-header {
   height: 36px;

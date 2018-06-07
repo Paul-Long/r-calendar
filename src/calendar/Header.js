@@ -7,7 +7,6 @@ import { HeaderProps } from '../Props';
 const px = `${prefix}-header`;
 
 class Header extends React.PureComponent<HeaderProps> {
-
   renderMode = (mode) => {
     const { value, onModeChange } = this.props;
     let text;
@@ -22,8 +21,11 @@ class Header extends React.PureComponent<HeaderProps> {
       text = `${value[func]() + (mode === Mode.MONTH ? 1 : 0)}${cn}`;
     }
     return (
-      <div className={`${px}-center-${func}`}
-           onClick={() => onModeChange(mode)}>{text}</div>
+      <div
+        className={`${px}-center-${func}`}
+        onClick={() => onModeChange(mode)}
+      >{text}
+      </div>
     );
   };
 
@@ -32,8 +34,8 @@ class Header extends React.PureComponent<HeaderProps> {
     const type = num > 0 ? 'left' : 'right';
     const props = {
       type,
-      ['data-num']: num,
-      ['data-unit']: unit,
+      'data-num': num,
+      'data-unit': unit,
       double: unit === 'Y',
       onClick: onMomentChange,
     };
