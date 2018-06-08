@@ -184,7 +184,7 @@
 .rcc-calendar-range-select {
   border-bottom: 1px solid #0d7b7b;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 }
 .rcc-calendar-range-select > .rcc-calendar-input-range {
@@ -194,6 +194,10 @@
 .rcc-calendar-range-select > .rcc-calendar-input-range > .rcc-calendar-input {
   background-color: transparent;
   border: none;
+}
+.rcc-calendar-range-title {
+  display: inline-block;
+  margin-right: 10px;
 }
 .stickCenterV {
   position: absolute;

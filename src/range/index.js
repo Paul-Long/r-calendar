@@ -78,6 +78,17 @@ class Range extends React.PureComponent<RangeProps> {
     };
   };
 
+  renderTitle = () => {
+    const {title} = this.props;
+    if (!title) {
+      return '';
+    }
+    if (typeof title === 'function') {
+      return title();
+    }
+    return title;
+  };
+
   renderSelect = () => {
     const { selectValue } = this.state;
     const { format, iconRender } = this.props;
@@ -101,6 +112,9 @@ class Range extends React.PureComponent<RangeProps> {
       <div className={classNames(pf, className)}>
         <div className={`${pf}-select`}>
           {this.renderSelect()}
+          <div className={`${pf}-title`}>
+            {this.renderTitle()}
+          </div>
         </div>
         <div className={`${pf}-content`}>
           <Calendar {...this.calendarProps('left', 'startDate', diff)} />

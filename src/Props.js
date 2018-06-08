@@ -99,6 +99,7 @@ export type PickerProps = {
   iconRender?: Function,
   disabledDate?: Function,
   showIcon: boolean,
+  title: string | Function,
 }
 
 export type InputProps = {
