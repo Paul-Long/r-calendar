@@ -17,8 +17,14 @@ class Picker extends React.PureComponent<PickerProps> {
   };
   state = {
     visible: false,
-    value: undefined,
-    selectValue: undefined,
+    value: this.props.value,
+    selectValue: ((props = this.props) => {
+      if (props.pickerType === PickerType.RANGE && props.value) {
+        const [start, end] = props.value || [];
+        return [moment(start), moment(end)];
+      }
+      return undefined;
+    })(),
   };
 
   componentWillReceiveProps(next) {

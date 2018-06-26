@@ -26,7 +26,7 @@ class Range extends React.PureComponent<RangeProps> {
     if (!endDate) {
       endDate = moment();
     }
-    if (!startDate || startDate >= endDate) {
+    if (!startDate || startDate >= endDate || (startDate.diff(endDate, 'months') === 0)) {
       startDate = moment().subtract(1, 'M');
     }
     return { startDate, endDate };
