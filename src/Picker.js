@@ -6,7 +6,6 @@ import Calendar from './calendar';
 import Range from './range';
 import { Icon, Input, Modal, RangeInput } from './components';
 import { PickerProps } from './Props';
-import './index.css';
 
 class Picker extends React.PureComponent<PickerProps> {
   static defaultProps = {

@@ -1,3 +1,4 @@
+import './index.css';
 import Picker from './Picker';
 import * as variable from './variable';
 
